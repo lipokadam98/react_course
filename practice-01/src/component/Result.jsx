@@ -1,7 +1,11 @@
 import {formatter} from "../util/investment.js";
 
 export default function Result({investmentResult}){
-    console.log(investmentResult);
+    const initialInvestment =
+        investmentResult[0]?.valueEndOfYear -
+        investmentResult[0]?.interest -
+        investmentResult[0]?.annualInvestment;
+
     return (<table id='result'>
         <thead>
             <tr>
@@ -14,12 +18,14 @@ export default function Result({investmentResult}){
         </thead>
         <tbody>
         {investmentResult.map(result=> {
+            const totalInterest = result.valueEndOfYear - result.annualInvestment * result.year - initialInvestment;
+            const totalAmountInvested = result.valueEndOfYear -totalInterest;
             return <tr key={result.year}>
                 <td>{result.year}</td>
                 <td>{formatter.format(result.valueEndOfYear)}</td>
                 <td>{formatter.format(result.interest)}</td>
-                <td>{result.year}</td>
-                <td>{result.year}</td>
+                <td>{formatter.format(totalInterest)}</td>
+                <td>{formatter.format(totalAmountInvested)}</td>
             </tr>
         })}
 
