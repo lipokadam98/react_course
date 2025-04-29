@@ -3,11 +3,18 @@ import { calculateInvestmentResults, formatter } from '../util/investment.js';
 
 export default function Results({ input }) {
   const results = [];
+
   calculateInvestmentResults(input, results);
+
+  if(results.length === 0){
+      return <p style={{textAlign: "center"}}>Invalid input data provided</p>;
+  }
+
+  const firstResult = results[0];
   const initialInvestment =
-    results[0].valueEndOfYear -
-    results[0].interest -
-    results[0].annualInvestment;
+      firstResult?.valueEndOfYear -
+      firstResult?.interest -
+      firstResult?.annualInvestment;
 
   return (
     <table id="result">
