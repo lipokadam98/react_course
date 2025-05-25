@@ -5,17 +5,25 @@ export const QuizContext = createContext({
     currentQuestion: questions[0],
     questionIndex: 0,
     answersStored: [],
+    stats: {
+        skipped: 0,
+        correct: 43,
+        incorrect: 57
+    },
     showNextQuestion: (answer) => {},
     restart: () => {}
-
 });
 
 function quizReducer(state, action) {
     if(action.type === 'SHOW_NEXT'){
         const nextIndex = state.questionIndex + 1;
+        const storedAnswer = {
+            ...action.payload,
+            index: nextIndex
+        }
         return {
             ...state,
-            answersStored: [...state.answersStored, action.payload],
+            answersStored: [...state.answersStored, storedAnswer],
             questionIndex: nextIndex,
             currentQuestion: nextIndex === questions.length ? undefined : questions[nextIndex]
         }
@@ -40,11 +48,15 @@ export default function QuizContextProvider({ children }){
             currentQuestion: questions[0],
             questionIndex: 0,
             answersStored: [],
+            stats: {
+                skipped: 0,
+                correct: 43,
+                incorrect: 57
+            },
         }
     );
 
     function handleShowNextQuestion(answer) {
-        console.log(answer);
         quizDispatch({
             type: 'SHOW_NEXT',
             payload: answer
@@ -61,6 +73,7 @@ export default function QuizContextProvider({ children }){
         currentQuestion: quizState.currentQuestion,
         questionIndex: quizState.questionIndex,
         answersStored: quizState.answersStored,
+        stats: quizState.stats,
         showNextQuestion: handleShowNextQuestion,
         restart: handleRestart
     }
