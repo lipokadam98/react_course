@@ -16,8 +16,8 @@ export default function Summary(){
                     <p className='question'>
                         {answer.question.text}
                     </p>
-                    <p className={answer.wasCorrect ? 'user-answer correct' : 'user-answer wrong'}>
-                        {answer.answer}
+                    <p className={answer.wasCorrect ? 'user-answer correct' : answer.wasSkipped ? 'user-answer skipped' : 'user-answer wrong'}>
+                        {answer.wasSkipped ? 'Answer was skipped' : answer.answer }
                     </p>
                 </li>)}
         </ol>

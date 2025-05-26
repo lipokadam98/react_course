@@ -1,4 +1,4 @@
-import {createContext, useReducer} from 'react';
+import {createContext, useCallback, useReducer} from 'react';
 import questions from "../questions.js";
 
 export const QuizContext = createContext({
@@ -7,8 +7,8 @@ export const QuizContext = createContext({
     answersStored: [],
     stats: {
         skipped: 0,
-        correct: 43,
-        incorrect: 57
+        correct: 0,
+        incorrect: 0
     },
     showNextQuestion: (answer) => {},
     restart: () => {}
@@ -16,6 +16,21 @@ export const QuizContext = createContext({
 
 function quizReducer(state, action) {
     if(action.type === 'SHOW_NEXT'){
+
+        let correct = state.stats.correct;
+        let incorrect = state.stats.incorrect;
+        let skipped = state.stats.skipped;
+
+        if(action.payload.wasCorrect){
+             correct = correct + 1;
+        }else{
+            if(action.payload.wasSkipped){
+                skipped = skipped + 1;
+            }else{
+                incorrect = incorrect + 1;
+            }
+        }
+
         const nextIndex = state.questionIndex + 1;
         const storedAnswer = {
             ...action.payload,
@@ -25,7 +40,12 @@ function quizReducer(state, action) {
             ...state,
             answersStored: [...state.answersStored, storedAnswer],
             questionIndex: nextIndex,
-            currentQuestion: nextIndex === questions.length ? undefined : questions[nextIndex]
+            currentQuestion: nextIndex === questions.length ? undefined : questions[nextIndex],
+            stats: {
+                correct,
+                incorrect,
+                skipped
+            }
         }
     }
 
@@ -50,18 +70,19 @@ export default function QuizContextProvider({ children }){
             answersStored: [],
             stats: {
                 skipped: 0,
-                correct: 43,
-                incorrect: 57
+                correct: 0,
+                incorrect: 0
             },
         }
     );
 
-    function handleShowNextQuestion(answer) {
+    const handleShowNextQuestion = useCallback(function handleShowNextQuestion(answer) {
         quizDispatch({
             type: 'SHOW_NEXT',
             payload: answer
         });
-    }
+    }, []);
+
 
     function handleRestart() {
         quizDispatch({
