@@ -38,6 +38,11 @@ body {
 #main-header button {
   font-size: 1.5rem;
   font-family: 'Lato', sans-serif;
+  color: #ffc404;
+  font-weight: bold;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 h1 {
