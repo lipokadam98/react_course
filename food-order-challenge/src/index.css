@@ -35,7 +35,7 @@ body {
   border: 2px solid #ffc404;
 }
 
-#main-header button {
+.main-header-button {
   font-size: 1.5rem;
   font-family: 'Lato', sans-serif;
   color: #ffc404;
@@ -75,7 +75,6 @@ h1 {
 }
 
 .meal-item article {
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -175,6 +174,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
 }
 
 .cart-item-actions button:hover,
@@ -187,6 +187,7 @@ h1 {
   margin: 0.5rem 0;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
 .control label {
